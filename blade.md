@@ -1,38 +1,38 @@
 # Blade Templates
 
-- [Introduction](#introduction)
-- [Template Inheritance](#template-inheritance)
-    - [Defining A Layout](#defining-a-layout)
-    - [Extending A Layout](#extending-a-layout)
-- [Components & Slots](#components-and-slots)
-- [Displaying Data](#displaying-data)
-    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
-- [Control Structures](#control-structures)
-    - [If Statements](#if-statements)
-    - [Switch Statements](#switch-statements)
-    - [Loops](#loops)
-    - [The Loop Variable](#the-loop-variable)
-    - [Comments](#comments)
-    - [PHP](#php)
-- [Including Sub-Views](#including-sub-views)
-    - [Rendering Views For Collections](#rendering-views-for-collections)
-- [Stacks](#stacks)
-- [Service Injection](#service-injection)
-- [Extending Blade](#extending-blade)
-    - [Custom If Statements](#custom-if-statements)
+- [はじめに]（＃序論）
+- [テンプレートの継承]（＃テンプレート継承）
+     - [レイアウトの定義]（#define-a-layout）
+     - [レイアウトを拡張する]（＃extend-a-layout）
+- [コンポーネントとスロット]（＃コンポーネントとスロット）
+- [データ表示]（＃表示データ）
+     - [Blade＆JavaScript Frameworks]（＃blade-and-javascript-frameworks）
+- [制御構造]（＃制御構造）
+     - [Ifステートメント]（＃ifステートメント）
+     - [スイッチ文]（＃switch文）
+     - [ループ]（＃ループ）
+     - [ループ変数]（＃ループ変数）
+     - [コメント]（＃コメント）
+     - [PHP]（＃php）
+- [サブビューを含む]（サブビューを含む＃）
+     - [コレクションのレンダリングビュー]（＃rendering-views-for-collections）
+- [スタック]（＃スタック）
+- [サービスインジェクション]（＃サービスインジェクション）
+- [エクステンションブレード]（エクステンションブレード）
+     - [カスタムIf文]（＃custom-if-statements）
 
 <a name="introduction"></a>
-## Introduction
+## 前書き
 
-Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. In fact, all Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+BladeはLaravelと共に提供されるシンプルで強力なテンプレートエンジンです。 他の一般的なPHPテンプレートエンジンとは異なり、BladeはあなたのビューでプレーンなPHPコードを使用することを制限しません。 実際、Bladeのすべてのビューは通常のPHPコードにコンパイルされ、修正されるまでキャッシュされます。つまり、Bladeは本質的にアプリケーションにオーバーヘッドをゼロにします。 ブレードビューファイルは `.blade.php`ファイル拡張子を使用し、通常は` resources / views`ディレクトリに保存されます。
 
 <a name="template-inheritance"></a>
-## Template Inheritance
+## テンプレートの継承
 
 <a name="defining-a-layout"></a>
-### Defining A Layout
+### レイアウトの定義
 
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+Bladeを使用する主な利点の2つは_テンプレート継承_と_セクション_です。 まず、簡単な例を見てみましょう。 まず、「マスター」ページレイアウトを調べます。 ほとんどのWebアプリケーションはさまざまなページに同じ一般レイアウトを維持するので、このレイアウトを単一のBladeビューとして定義すると便利です。
 
     <!-- Stored in resources/views/layouts/app.blade.php -->
 
@@ -51,14 +51,14 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         </body>
     </html>
 
-As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
+このファイルには、典型的なHTMLマークアップが含まれています。 しかし、 `@ section`と` @ yield`の指示に注意してください。 `@ section`ディレクティブは、名前が示すように、コンテンツのセクションを定義し、` @ yield`ディレクティブは、指定されたセクションの内容を表示するために使用されます。
 
-Now that we have defined a layout for our application, let's define a child page that inherits the layout.
+アプリケーションのレイアウトを定義したので、レイアウトを継承する子ページを定義しましょう。
 
 <a name="extending-a-layout"></a>
-### Extending A Layout
+### レイアウトを拡張する
 
-When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+子ビューを定義するときは、Bladeの `@ extends`ディレクティブを使用して、子ビューが"継承する "レイアウトを指定します。 ブレードレイアウトを拡張するビューは、 `@ section`ディレクティブを使用してレイアウトのセクションにコンテンツを挿入することができます。 上記の例のように、これらのセクションの内容は `@ yield`を使ってレイアウトに表示されます：
 
     <!-- Stored in resources/views/child.blade.php -->
 
@@ -76,20 +76,20 @@ When defining a child view, use the Blade `@extends` directive to specify which 
         <p>This is my body content.</p>
     @endsection
 
-In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
+この例では、 `sidebar`セクションはレイアウトのサイドバーにコンテンツを（上書きするのではなく）追加するために` @@ parent`指示文を利用しています。 @@ parentディレクティブは、ビューがレンダリングされるときのレイアウトの内容に置き換えられます。
 
-> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+> {tip}前の例とは異なり、この `sidebar`セクションは` @show`ではなく `@ endsection`で終わります。 `@ endsection`ディレクティブはセクションを定義するだけですが、` @ show`は定義し**即座に**セクションを生成します。
 
-Blade views may be returned from routes using the global `view` helper:
+ブレードビューは、グローバルな `view`ヘルパーを使ってルートから返すことができます：
 
     Route::get('blade', function () {
         return view('child');
     });
 
 <a name="components-and-slots"></a>
-## Components & Slots
+## コンポーネントとスロット
 
-Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. First, let's imagine a reusable "alert" component we would like to reuse throughout our application:
+コンポーネントとスロットは、セクションやレイアウトにも同様の利点があります。しかし、コンポーネントやスロットのメンタルモデルが理解しやすくなることがあります。まず、アプリケーション全体で再利用したい、再利用可能な「警告」コンポーネントを想像してみましょう。
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -97,13 +97,13 @@ Components and slots provide similar benefits to sections and layouts; however, 
         {{ $slot }}
     </div>
 
-The `{{ $slot }}` variable will contain the content we wish to inject into the component. Now, to construct this component, we can use the `@component` Blade directive:
+`{{$ slot}}`変数には、コンポーネントに注入したい内容が入ります。今、このコンポーネントを構築するために、 `@ component` Bladeディレクティブを使うことができます：
 
     @component('alert')
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
-Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
+コンポーネントの複数のスロットを定義すると便利な場合があります。アラートコンポーネントを修正して、「タイトル」の挿入を許可しましょう。名前付きスロットは、名前に一致する変数を「エコーする」ことで表示されます：
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -113,7 +113,7 @@ Sometimes it is helpful to define multiple slots for a component. Let's modify o
         {{ $slot }}
     </div>
 
-Now, we can inject content into the named slot using the `@slot` directive. Any content not within a `@slot` directive will be passed to the component in the `$slot` variable:
+これで、 `@ slot`指示文を使って名前付きスロットにコンテンツを挿入することができます。 `@ slot`ディレクティブにないコンテンツはすべて、` $ slot`変数の中のコンポーネントに渡されます：
 
     @component('alert')
         @slot('title')
@@ -123,78 +123,78 @@ Now, we can inject content into the named slot using the `@slot` directive. Any 
         You are not allowed to access this resource!
     @endcomponent
 
-#### Passing Additional Data To Components
+#### 追加のデータをコンポーネントに渡す
 
-Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
+場合によっては、追加のデータをコンポーネントに渡す必要が生じることがあります。このため、データの配列を `@ component`ディレクティブの第2引数として渡すことができます。すべてのデータは、コンポーネントテンプレートで変数として使用できるようになります。
 
     @component('alert', ['foo' => 'bar'])
         ...
     @endcomponent
 
-#### Aliasing Components
+#### エイリアシングコンポーネント
 
-If your Blade components are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+Bladeコンポーネントがサブディレクトリに格納されている場合は、それらのエイリアスを使用して簡単にアクセスできます。たとえば、 `resources / views / components / alert.blade.php`に格納されているBladeコンポーネントを想像してみてください。 `component`メソッドを使ってコンポーネントを` components.alert`から `alert`にエイリアスすることができます。通常これは `AppServiceProvider`の` boot`メソッドで行います：
 
     use Illuminate\Support\Facades\Blade;
 
     Blade::component('components.alert', 'alert');
 
-Once the component has been aliased, you may render it using a directive:
+コンポーネントにエイリアスが設定されたら、次のディレクティブを使用してレンダリングできます。
 
     @alert(['type' => 'danger'])
         You are not allowed to access this resource!
     @endalert
 
-You may omit the component parameters if it has no additional slots:
+追加のスロットがない場合は、コンポーネントパラメータを省略することができます。
 
     @alert
         You are not allowed to access this resource!
     @endalert
 
 <a name="displaying-data"></a>
-## Displaying Data
+## データの表示
 
-You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
+変数を中括弧で囲み、Bladeビューに渡されるデータを表示することができます。たとえば、次の経路を指定します。
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
     });
 
-You may display the contents of the `name` variable like so:
+`name`変数の内容を次のように表示することができます：
 
     Hello, {{ $name }}.
 
-Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
+もちろん、ビューに渡される変数の内容の表示に限定されません。 PHP関数の結果をエコーすることもできます。実際、Bladeのecho文の中に、あなたが望む任意のPHPコードを置くことができます：
 
     The current UNIX timestamp is {{ time() }}.
 
-> {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
+> {tip} Blade `{{}}`文は、XSS攻撃を防ぐためにPHPの `htmlspecialchars`関数を介して自動的に送られます。
 
-#### Displaying Unescaped Data
+#### エスケープされていないデータを表示する
 
-By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+デフォルトでは、Bladeの `{{}}`文はPHPの `htmlspecialchars`関数を介して自動的に送られ、XSS攻撃を防ぎます。データをエスケープしないようにするには、次の構文を使用します。
 
     Hello, {!! $name !!}.
 
-> {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+> {note}アプリケーションのユーザーから提供されたコンテンツをエコーするときは、非常に注意してください。ユーザーが指定したデータを表示するときは、常にXSS攻撃を防ぐために、エスケープされた二重中括弧構文を使用してください。
 
-#### Rendering JSON
+#### JSONのレンダリング
 
-Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+JavaScript変数を初期化するためにJSONとしてレンダリングする意図で、配列をビューに渡すことがあります。例えば：
 
     <script>
         var app = <?php echo json_encode($array); ?>;
     </script>
 
-However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
+しかし、手動で `json_encode`を呼び出す代わりに、` @ json` Bladeディレクティブを使うことができます：
 
     <script>
         var app = @json($array);
     </script>
 
-#### HTML Entity Encoding
+#### HTMLエンティティエンコーディング
 
-By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+デフォルトでは、Blade（およびLaravel `e 'ヘルパー）はHTMLエンティティを二重エンコードします。ダブルエンコーディングを無効にしたい場合は、 `AppServiceProvider`の` boot`メソッドから `Blade :: withoutDoubleEncoding`メソッドを呼び出してください：
 
     <?php
 
@@ -217,19 +217,19 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
     }
 
 <a name="blade-and-javascript-frameworks"></a>
-### Blade & JavaScript Frameworks
+### ブレード＆JavaScriptフレームワーク
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+多くのJavaScriptフレームワークでは、中括弧を使用してブラウザに表示する必要があることを示すため、 `@ '記号を使用して、表現を変更しないようにすることができます。例えば：
 
     <h1>Laravel</h1>
 
     Hello, @{{ name }}.
 
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+この例では、 `@ 'シンボルはBladeによって削除されます。しかし、 `{{name}}`式はBladeエンジンの影響を受けず、JavaScriptフレームワークによってレンダリングされます。
 
 #### The `@verbatim` Directive
 
-If you are displaying JavaScript variables in a large portion of your template, you may wrap the HTML in the `@verbatim` directive so that you do not have to prefix each Blade echo statement with an `@` symbol:
+テンプレートの大部分にJavaScript変数を表示している場合、HTMLを `@ verbatim`ディレクティブで囲むことで、各Bladeエコー文の先頭に` @ `記号を付ける必要はありません。
 
     @verbatim
         <div class="container">
@@ -238,14 +238,14 @@ If you are displaying JavaScript variables in a large portion of your template, 
     @endverbatim
 
 <a name="control-structures"></a>
-## Control Structures
+## 制御構造
 
-In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+テンプレートの継承とデータの表示に加えて、Bladeは、条件文やループなどの一般的なPHPコントロール構造に便利なショートカットを提供します。これらのショートカットは、PHP制御構造で作業する非常にクリーンで簡潔な方法を提供します。
 
 <a name="if-statements"></a>
-### If Statements
+### Ifステートメント
 
-You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
+`if`文を` @ if`、 `@ elseif`、` @ else`、および `@endif`ディレクティブを使って構築することができます。これらのディレクティブは、PHPの対応するディレクティブと同じように機能します。
 
     @if (count($records) === 1)
         I have one record!
@@ -255,13 +255,13 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
         I don't have any records!
     @endif
 
-For convenience, Blade also provides an `@unless` directive:
+便宜上、Bladeは `@ unless`指示文も提供しています：
 
     @unless (Auth::check())
         You are not signed in.
     @endunless
 
-In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
+既に説明した条件付きディレクティブに加えて、 `@ isset`および` @ empty`ディレクティブは、それぞれのPHP関数の便利なショートカットとして使用できます。
 
     @isset($records)
         // $records is defined and is not null...
@@ -271,9 +271,9 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
-#### Authentication Directives
+#### 認証ディレクティブ
 
-The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
+`@ auth`と` @ guest`ディレクティブを使って、現在のユーザが認証されているかゲストであるかを素早く判断できます：
 
     @auth
         // The user is authenticated...
@@ -283,7 +283,7 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
         // The user is not authenticated...
     @endguest
 
-If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
+必要に応じて、 `@ auth`と` @ guest`ディレクティブを使うときにチェックすべき[authentication guard]（/ docs / {{version}} / authentication）を指定することができます：
 
     @auth('admin')
         // The user is authenticated...
@@ -293,9 +293,9 @@ If needed, you may specify the [authentication guard](/docs/{{version}}/authenti
         // The user is not authenticated...
     @endguest
 
-#### Section Directives
+#### セクション指示
 
-You may check if a section has content using the `@hasSection` directive:
+セクションに `@ hasSection`ディレクティブを使ってコンテンツがあるかどうかを調べることができます：
 
     @hasSection('navigation')
         <div class="pull-right">
@@ -306,9 +306,9 @@ You may check if a section has content using the `@hasSection` directive:
     @endif
 
 <a name="switch-statements"></a>
-### Switch Statements
+### スイッチ文
 
-Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@default` and `@endswitch` directives:
+switch文は、 `@ switch`、` @ case`、 `@ break`、` @ default`、 `@endswitch`ディレクティブを使って構築することができます：
 
     @switch($i)
         @case(1)
@@ -324,9 +324,9 @@ Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@d
     @endswitch
 
 <a name="loops"></a>
-### Loops
+### ループ
 
-In addition to conditional statements, Blade provides simple directives for working with PHP's loop structures. Again, each of these directives functions identically to their PHP counterparts:
+条件文に加えて、BladeはPHPのループ構造を操作するための簡単なディレクティブを提供します。 ここでも、これらのディレクティブのそれぞれは、PHPの対応するディレクティブと同じように機能します。
 
     @for ($i = 0; $i < 10; $i++)
         The current value is {{ $i }}
@@ -346,9 +346,9 @@ In addition to conditional statements, Blade provides simple directives for work
         <p>I'm looping forever.</p>
     @endwhile
 
-> {tip} When looping, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
+> {tip}ループするときに、[ループ変数]（＃the-loop-variable）を使用して、ループを通した最初の反復か最後の反復かなど、ループに関する重要な情報を得ることができます。
 
-When using loops you may also end the loop or skip the current iteration:
+ループを使用する場合は、ループを終了するか、現在の反復をスキップすることもできます。
 
     @foreach ($users as $user)
         @if ($user->type == 1)
@@ -362,7 +362,7 @@ When using loops you may also end the loop or skip the current iteration:
         @endif
     @endforeach
 
-You may also include the condition with the directive declaration in one line:
+また、ディレクティブ宣言付きの条件を1行に含めることもできます。
 
     @foreach ($users as $user)
         @continue($user->type == 1)
@@ -373,9 +373,9 @@ You may also include the condition with the directive declaration in one line:
     @endforeach
 
 <a name="the-loop-variable"></a>
-### The Loop Variable
+### ループ変数
 
-When looping, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
+ループするとき、 `$ loop`変数がループの内部で利用可能になります。この変数は、現在のループインデックスや、これがループを通した最初の反復か最後の反復かなどの有用な情報ビットへのアクセスを提供します。
 
     @foreach ($users as $user)
         @if ($loop->first)
@@ -389,7 +389,7 @@ When looping, a `$loop` variable will be available inside of your loop. This var
         <p>This is user {{ $user->id }}</p>
     @endforeach
 
-If you are in a nested loop, you may access the parent loop's `$loop` variable via the `parent` property:
+ネストされたループの場合は、親ループの `$ loop`変数に` parent`プロパティでアクセスすることができます：
 
     @foreach ($users as $user)
         @foreach ($user->posts as $post)
@@ -399,41 +399,41 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
         @endforeach
     @endforeach
 
-The `$loop` variable also contains a variety of other useful properties:
+`$ loop`変数には、他にもさまざまな有用なプロパティがあります：
 
-Property  | Description
+プロパティ  | 説明
 ------------- | -------------
-`$loop->index`  |  The index of the current loop iteration (starts at 0).
-`$loop->iteration`  |  The current loop iteration (starts at 1).
-`$loop->remaining`  |  The iteration remaining in the loop.
-`$loop->count`  |  The total number of items in the array being iterated.
-`$loop->first`  |  Whether this is the first iteration through the loop.
-`$loop->last`  |  Whether this is the last iteration through the loop.
-`$loop->depth`  |  The nesting level of the current loop.
-`$loop->parent`  |  When in a nested loop, the parent's loop variable.
+`$loop->index`  |  現在のループ反復のインデックス（0から始まる）。
+`$loop->iteration`  |  現在のループ反復（1から開始）。
+`$loop->remaining`  |  ループ内に残っている反復。
+`$loop->count`  |  反復される配列内のアイテムの総数。
+`$loop->first`  |  これがループを通る最初の反復であるかどうか。
+`$loop->last`  |  これがループを通る最後の反復であるかどうか。
+`$loop->depth`  |  現在のループのネストレベル
+`$loop->parent`  |  ネストされたループの場合、親のループ変数。
 
 <a name="comments"></a>
-### Comments
+### コメント
 
-Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+Bladeでは、ビュー内にコメントを定義することもできます。 ただし、HTMLコメントとは異なり、Bladeコメントはアプリケーションから返されるHTMLには含まれません。
 
     {{-- This comment will not be present in the rendered HTML --}}
 
 <a name="php"></a>
 ### PHP
 
-In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
+状況によっては、ビューにPHPコードを埋め込むのが便利です。 Bladeの `@ php`ディレクティブを使用して、テンプレート内でプレーンなPHPのブロックを実行することができます：
 
     @php
         //
     @endphp
 
-> {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+> {tip} Bladeはこの機能を提供していますが、頻繁に使用すると、テンプレート内にロジックが多すぎるというシグナルが出る可能性があります。
 
 <a name="including-sub-views"></a>
-## Including Sub-Views
+## サブビューを含む
 
-Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
+Bladeの `@include`ディレクティブを使うと、別のビューからブレードビューを含めることができます。親ビューで使用できるすべての変数は、含まれているビューで使用できるようになります。
 
     <div>
         @include('shared.errors')
@@ -443,49 +443,49 @@ Blade's `@include` directive allows you to include a Blade view from within anot
         </form>
     </div>
 
-Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
+インクルードされたビューは親ビューで使用可能なすべてのデータを継承しますが、追加のデータの配列をインクルードされたビューに渡すこともできます。
 
     @include('view.name', ['some' => 'data'])
 
-Of course, if you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
+もちろん、存在しないビューを `@include 'しようとすると、Laravelはエラーを投げます。もし存在していてもいなくてもよいビューを含めるには、 `@includeIf`指示文を使うべきです：
 
     @includeIf('view.name', ['some' => 'data'])
 
-If you would like to `@include` a view depending on a given boolean condition, you may use the `@includeWhen` directive:
+与えられたブール条件に応じてビューを `@include 'したい場合、` @include`ディレクティブを使うことができます：
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
-To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
+与えられたビューの配列から存在する最初のビューをインクルードするには、 `includeFirst`ディレクティブを使用します：
 
     @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
 
-> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
+> {note}あなたのブレードビューでは、キャッシュされコンパイルされたビューの位置を参照するため、 `__DIR__`と` __FILE__`定数を使わないでください。
 
 <a name="rendering-views-for-collections"></a>
-### Rendering Views For Collections
+### コレクションのレンダリングビュー
 
-You may combine loops and includes into one line with Blade's `@each` directive:
+ループを組み合せて、Bladeの `@ each`指令で1行に含めることができます：
 
     @each('view.name', $jobs, 'job')
 
-The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial. The key for the current iteration will be available as the `key` variable within your view partial.
+最初の引数は、配列またはコレクション内の各要素に対してレンダリングするビューの一部です。 2番目の引数は、反復処理する配列またはコレクションです.3番目の引数は、ビュー内の現在の反復に割り当てられる変数名です。したがって、たとえば、 `jobs`の配列を反復処理している場合、通常、ビューのpartial内の` job`変数として各ジョブにアクセスしたいと思うでしょう。現在の反復のキーは、ビューのpartial内の `key`変数として利用できます。
 
-You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+第4引数を `@ each`ディレクティブに渡すこともできます。この引数は、指定された配列が空の場合にレンダリングされるビューを決定します。
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
+> {note} `@ each`を介してレンダリングされたビューは、親ビューから変数を継承しません。子ビューにこれらの変数が必要な場合は、代わりに `@ foreach`と` @include`を使用してください。
 
 <a name="stacks"></a>
-## Stacks
+## スタック
 
-Blade allows you to push to named stacks which can be rendered somewhere else in another view or layout. This can be particularly useful for specifying any JavaScript libraries required by your child views:
+Bladeを使用すると、別のビューやレイアウトの別の場所にレンダリングできる名前付きスタックにプッシュすることができます。これは、子ビューで必要なJavaScriptライブラリを指定する場合に特に便利です。
 
     @push('scripts')
         <script src="/example.js"></script>
     @endpush
 
-You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
+必要に応じて何度もスタックにプッシュすることができます。完全なスタック内容をレンダリングするには、スタックの名前を `@ stack`ディレクティブに渡します：
 
     <head>
         <!-- Head Contents -->
@@ -494,9 +494,9 @@ You may push to a stack as many times as needed. To render the complete stack co
     </head>
 
 <a name="service-injection"></a>
-## Service Injection
+## サービスインジェクション
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
+@Iject`ディレクティブは、Laravel [サービスコンテナ]（/ docs / {{version}} / container）からサービスを取得するために使用できます。 `@ inject`に渡される最初の引数は、サービスが配置される変数の名前です.2番目の引数は、解決したいサービスのクラスまたはインタフェース名です。
 
     @inject('metrics', 'App\Services\MetricsService')
 
@@ -505,11 +505,11 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
     </div>
 
 <a name="extending-blade"></a>
-## Extending Blade
+## ブレードを伸ばす
 
-Blade allows you to define your own custom directives using the `directive` method. When the Blade compiler encounters the custom directive, it will call the provided callback with the expression that the directive contains.
+Bladeでは、 `directive`メソッドを使用して独自のカスタムディレクティブを定義することができます。 Bladeコンパイラがカスタム・ディレクティブに遭遇すると、ディレクティブに含まれている式を指定してコールバックを呼び出します。
 
-The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
+次の例は `$ var`をフォーマットする` @datetime（$ var） `指示文を作成します。これは` DateTime`のインスタンスでなければなりません：
 
     <?php
 
@@ -543,16 +543,16 @@ The following example creates a `@datetime($var)` directive which formats a give
         }
     }
 
-As you can see, we will chain the `format` method onto whatever expression is passed into the directive. So, in this example, the final PHP generated by this directive will be:
+ご覧のとおり、 `format`メソッドをディレクティブに渡す式に連鎖させます。したがって、この例では、このディレクティブによって生成される最終的なPHPは次のよ​​うになります。
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> {note} After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
+> {note} Bladeディレクティブのロジックを更新したら、キャッシュされたBladeビューをすべて削除する必要があります。キャッシュされたブレードビューは、 `view：clear` Artisanコマンドを使用して削除することができます。
 
 <a name="custom-if-statements"></a>
-### Custom If Statements
+### カスタムIf文
 
-Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
+カスタムディレクティブのプログラミングは、シンプルなカスタム条件ステートメントを定義するときに必要以上に複雑な場合があります。そのため、Bladeは `Blade :: if`メソッドを提供しています。これにより、Closuresを使用してカスタムの条件付きディレクティブを素早く定義することができます。たとえば、現在のアプリケーション環境をチェックするカスタム条件を定義しましょう。 `AppServiceProvider`の` boot`メソッドでこれを行うかもしれません：
 
     use Illuminate\Support\Facades\Blade;
 
@@ -568,7 +568,7 @@ Programming a custom directive is sometimes more complex than necessary when def
         });
     }
 
-Once the custom conditional has been defined, we can easily use it on our templates:
+カスタム条件式が定義されると、テンプレートで簡単に使用できます。
 
     @env('local')
         // The application is in the local environment...
