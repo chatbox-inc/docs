@@ -1,35 +1,35 @@
 # Cache
 
-- [Configuration](#configuration)
-    - [Driver Prerequisites](#driver-prerequisites)
-- [Cache Usage](#cache-usage)
-    - [Obtaining A Cache Instance](#obtaining-a-cache-instance)
-    - [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
-    - [Storing Items In The Cache](#storing-items-in-the-cache)
-    - [Removing Items From The Cache](#removing-items-from-the-cache)
-    - [The Cache Helper](#the-cache-helper)
-- [Cache Tags](#cache-tags)
-    - [Storing Tagged Cache Items](#storing-tagged-cache-items)
-    - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
-    - [Removing Tagged Cache Items](#removing-tagged-cache-items)
-- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
-    - [Writing The Driver](#writing-the-driver)
-    - [Registering The Driver](#registering-the-driver)
-- [Events](#events)
+- [設定]（＃設定）
+     - [ドライバの前提条件]（＃ドライバの前提条件）
+- [キャッシュ使用量]（＃cache-usage）
+     - [キャッシュインスタンスの取得]（＃取得-a-cache-instance）
+     - [キャッシュからアイテムを取得する]（＃キャッシュからアイテムを取得する）
+     - [キャッシュ内のアイテムの格納]（＃ストア中のアイテムのキャッシュ）
+     - [キャッシュからアイテムを削除する]（キャッシュから項目を削除する＃）
+     - [The Cache Helper]（＃the-cache-helper）
+- [キャッシュタグ]（＃cache-tags）
+     - [タグ付きキャッシュ項目の格納]（＃格納タグ付きキャッシュ項目）
+     - [タグ付きキャッシュ項目へのアクセス]（＃アクセスタグ付きキャッシュ項目）
+     - [タグ付きキャッシュ項目の削除]（＃remove-tagged-cache-items）
+- [カスタムキャッシュドライバの追加]（＃adding-custom-cache-drivers）
+     - [ドライバを書く]（＃書き込みドライバ）
+     - [ドライバの登録]（＃登録ドライバ）
+- [Events]（＃events）
 
 <a name="configuration"></a>
-## Configuration
+## 構成
 
-Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org) and [Redis](https://redis.io) out of the box.
+Laravelは、様々なキャッシングバックエンドのための表現力豊かな統一APIを提供します。 キャッシュ設定は `config / cache.php`にあります。 このファイルでは、アプリケーション全体でデフォルトで使用するキャッシュドライバを指定できます。 Laravelは、[Memcached]（https://memcached.org）や[Redis]（https://redis.io）のような一般的なキャッシュバックエンドをサポートしています。
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
+キャッシュ構成ファイルには、ファイル内に文書化されている他のさまざまなオプションも含まれているので、これらのオプションを必ず確認してください。 デフォルトでは、Laravelは `file`キャッシュドライバを使用するように設定されています。このドライバは、シリアライズされたキャッシュオブジェクトをファイルシステムに格納します。 大規模なアプリケーションの場合は、MemcachedやRedisなどのより堅牢なドライバを使用することをお勧めします。 同じドライバに対して複数のキャッシュ構成を構成することもできます。
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### ドライバの前提条件
 
-#### Database
+#### データベース
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+`database`キャッシュドライバを使用する場合は、キャッシュ項目を格納するテーブルを設定する必要があります。 以下の表の `Schema`宣言の例があります：
 
     Schema::create('cache', function ($table) {
         $table->string('key')->unique();
@@ -37,11 +37,11 @@ When using the `database` cache driver, you will need to setup a table to contai
         $table->integer('expiration');
     });
 
-> {tip} You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
+> {tip} `php artisan cache：table` Artisanコマンドを使って、適切なスキーマで移行を生成することもできます。
 
 #### Memcached
 
-Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file:
+Memcachedドライバを使用するには、[Memcached PECL package]（https://pecl.php.net/package/memcached）がインストールされている必要があります。 `config / cache.php`設定ファイルにMemcachedサーバをすべてリストすることができます：
 
     'memcached' => [
         [
@@ -51,7 +51,7 @@ Using the Memcached driver requires the [Memcached PECL package](https://pecl.ph
         ],
     ],
 
-You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+host`オプションをUNIXソケットパスに設定することもできます。これを行うと、 `port`オプションは` 0`に設定されます：
 
     'memcached' => [
         [
@@ -61,21 +61,21 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
         ],
     ],
 
-#### Redis
+#### レディス
 
-Before using a Redis cache with Laravel, you will need to either install the `predis/predis` package (~1.0) via Composer or install the PhpRedis PHP extension via PECL.
+LaravelでRedisキャッシュを使う前に、Composer経由で `predis / predis`パッケージ（〜1.0）をインストールするか、PECL経由でPhpRedis PHP拡張機能をインストールする必要があります。
 
-For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
+Redisの設定の詳細については、[Laravel documentation page]（/ docs / {{version}} / redis＃configuration）を参照してください。
 
 <a name="cache-usage"></a>
-## Cache Usage
+## キャッシュの使用法
 
 <a name="obtaining-a-cache-instance"></a>
-### Obtaining A Cache Instance
+### キャッシュインスタンスの取得
 
-The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
+`Illuminate \ Contracts \ Cache \ Factory`と` Illuminate \ Contracts \ Cache \ Repository` [契約]（/ docs / {{version}} /コントラクト）はLaravelのキャッシュサービスへのアクセスを提供します。 `Factory`契約はあなたのアプリケーション用に定義されたすべてのキャッシュドライバへのアクセスを提供します。 `Repository`契約は通常、あなたのアプリケーション用のデフォルトキャッシュドライバの実装で、` cache`設定ファイルで指定されています。
 
-However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts:
+しかし、このドキュメント全体で使用する `Cache`ファサードを使用することもできます。 `Cache`ファサードは、Laravelのキャッシュ規約の基礎となる実装への便利で簡潔なアクセスを提供します：
 
     <?php
 
@@ -98,164 +98,164 @@ However, you may also use the `Cache` facade, which is what we will use througho
         }
     }
 
-#### Accessing Multiple Cache Stores
+#### 複数のキャッシュストアへのアクセス
 
-Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
+`Cache`ファサードを使って、` store`メソッドを使って様々なキャッシュストアにアクセスすることができます。 `store`メソッドに渡されるキーは、` cache`コンフィギュレーションファイルの `stores`コンフィギュレーション配列にリストアップされているストアの1つに対応する必要があります：
 
     $value = Cache::store('file')->get('foo');
 
     Cache::store('redis')->put('bar', 'baz', 10);
 
 <a name="retrieving-items-from-the-cache"></a>
-### Retrieving Items From The Cache
+### キャッシュからアイテムを取得する
 
-The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the default value you wish to be returned if the item doesn't exist:
+`Cache`ファサードの` get`メソッドは、キャッシュからアイテムを取り出すために使用されます。 アイテムがキャッシュに存在しない場合、 `null`が返されます。 もしあなたが望むなら、項目が存在しない場合に返されるデフォルト値を指定する第2引数を `get`メソッドに渡すことができます：
 
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
 
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+あなたはデフォルト値として `Closure`を渡すことさえできます。 指定された項目がキャッシュに存在しない場合、 `Closure`の結果が返されます。 クロージャを渡すと、データベースや他の外部サービスからのデフォルト値の取得を延期できます。
 
     $value = Cache::get('key', function () {
         return DB::table(...)->get();
     });
 
-#### Checking For Item Existence
+#### アイテム存在の確認
 
-The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null` or `false`:
+`has`メソッドは、アイテムがキャッシュ内に存在するかどうかを判断するために使用されます。 このメソッドは、値が `null`または` false`の場合は `false`を返します。
 
     if (Cache::has('key')) {
         //
     }
 
-#### Incrementing / Decrementing Values
+#### インクリメント/デクリメント値
 
-The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
+`increment`と` decrement`メソッドは、キャッシュ内の整数項目の値を調整するために使用されます。 これらのメソッドはどちらも、アイテムの値をインクリメントまたはデクリメントする量を示すオプションの第2引数を受け取ります。
 
     Cache::increment('key');
     Cache::increment('key', $amount);
     Cache::decrement('key');
     Cache::decrement('key', $amount);
 
-#### Retrieve & Store
+#### 検索とストア
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
+場合によっては、キャッシュからアイテムを取得することもできますが、要求されたアイテムが存在しない場合はデフォルト値を保存することもできます。 たとえば、すべてのユーザーをキャッシュから取得したい場合や、存在しない場合はデータベースから取得してキャッシュに追加することができます。 これは `Cache :: remember`メソッドを使って行うことができます：
 
     $value = Cache::remember('users', $minutes, function () {
         return DB::table('users')->get();
     });
 
-If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+アイテムがキャッシュに存在しない場合、 `remember`メソッドに渡された` Closure`が実行され、その結果がキャッシュに置かれます。
 
-You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
+`rememberForever`メソッドを使って、キャッシュからアイテムを取り出したり、永遠にそれを保存することができます：
 
     $value = Cache::rememberForever('users', function() {
         return DB::table('users')->get();
     });
 
-#### Retrieve & Delete
+#### 検索と削除
 
-If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
+キャッシュからアイテムを取得してからアイテムを削除する必要がある場合は、 `pull`メソッドを使用することができます。 `get`メソッドと同様に、アイテムがキャッシュに存在しない場合は` null`が返されます：
 
     $value = Cache::pull('key');
 
 <a name="storing-items-in-the-cache"></a>
-### Storing Items In The Cache
+### キャッシュ内にアイテムを格納する
 
-You may use the `put` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you need to specify the number of minutes for which the value should be cached:
+`Cache`ファサードで` put`メソッドを使ってアイテムをキャッシュに保存することができます。アイテムをキャッシュに配置するときには、値をキャッシュする時間を分単位で指定する必要があります。
 
     Cache::put('key', 'value', $minutes);
 
-Instead of passing the number of minutes as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
+分数を整数で渡す代わりに、分数を整数として渡す代りに、キャッシングされた項目の有効期限を表する `DateTime`を渡すこともできます：
 
     $expiresAt = now()->addMinutes(10);
 
     Cache::put('key', 'value', $expiresAt);
 
-#### Store If Not Present
+#### 存在しない場合はストア
 
-The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+`add`メソッドは、アイテムがキャッシュストアにまだ存在しない場合にのみ、そのアイテムをキャッシュに追加します。 アイテムが実際にキャッシュに追加された場合、このメソッドは `true`を返します。 それ以外の場合、メソッドは `false`を返します。
 
     Cache::add('key', 'value', $minutes);
 
-#### Storing Items Forever
+#### アイテムを永遠に保管する
 
-The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:
+永久にキャッシュに項目を格納するために `forever`メソッドを使用することができます。 これらの項目は期限切れにならないので、 `forget`メソッドを使ってキャッシュから手動で削除する必要があります：
 
     Cache::forever('key', 'value');
 
-> {tip} If you are using the Memcached driver, items that are stored "forever" may be removed when the cache reaches its size limit.
+> {tip} Memcachedドライバを使用している場合、キャッシュがサイズ制限に達すると「永遠に」保存されているアイテムが削除されることがあります。
 
 <a name="removing-items-from-the-cache"></a>
-### Removing Items From The Cache
+### キャッシュからアイテムを削除する
 
-You may remove items from the cache using the `forget` method:
+あなたは `forget`メソッドを使ってキャッシュから項目を削除することができます：
 
     Cache::forget('key');
 
-You may clear the entire cache using the `flush` method:
+`flush`メソッドを使ってキャッシュ全体をクリアすることができます：
 
     Cache::flush();
 
-> {note} Flushing the cache does not respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+> {note}キャッシュをフラッシュすると、キャッシュのプレフィックスは無視され、すべてのエントリがキャッシュから削除されます。 他のアプリケーションで共有されているキャッシュをクリアするときは、これを注意深く検討してください。
 
 <a name="the-cache-helper"></a>
-### The Cache Helper
+### キャッシュヘルパー
 
-In addition to using the `Cache` facade or [cache contract](/docs/{{version}}/contracts), you may also use the global `cache` function to retrieve and store data via the cache. When the `cache` function is called with a single, string argument, it will return the value of the given key:
+`Cache`ファサードや[cache contract]（/ docs / {{version}} / contracts）を使うことに加えて、グローバルな` cache`関数を使ってキャッシュを介してデータを取り出して保存することもできます。 `cache`関数が単一の文字列引数で呼び出されると、与えられたキーの値を返します：
 
     $value = cache('key');
 
-If you provide an array of key / value pairs and an expiration time to the function, it will store values in the cache for the specified duration:
+関数にキーと値のペアと有効期限の配列を指定すると、指定した期間のキャッシュに値が格納されます。
 
     cache(['key' => 'value'], $minutes);
 
     cache(['key' => 'value'], now()->addSeconds(10));
 
-> {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
+> {tip}グローバルな `cache`関数の呼び出しをテストするときは、あなたが[ファサードをテストする]（/ docs / {{version}} / mocking＃mocking- ファサード）。
 
 <a name="cache-tags"></a>
-## Cache Tags
+## キャッシュタグ
 
-> {note} Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> {note}キャッシュタグは、 `file`または` database`キャッシュドライバを使用しているときはサポートされていません。 さらに、「永遠に」保存されたキャッシュで複数のタグを使用する場合、古いキャッシュを自動的に消去する `memcached`などのドライバでパフォーマンスが最適になります。
 
 <a name="storing-tagged-cache-items"></a>
-### Storing Tagged Cache Items
+### タグ付きキャッシュ項目の格納
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+キャッシュタグを使用すると、キャッシュ内の関連項目にタグを付けてから、指定されたタグが割り当てられたすべてのキャッシュされた値をフラッシュできます。 タグ付きキャッシュにアクセスするには、順序付けられたタグ名の配列を渡します。 例えば、タグ付きキャッシュとキャッシュ内の `put`値にアクセスしましょう：
 
     Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
     Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
 
 <a name="accessing-tagged-cache-items"></a>
-### Accessing Tagged Cache Items
+### タグ付きキャッシュ項目へのアクセス
 
-To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
+タグ付きキャッシュ項目を取得するには、タグの同じ順序付きリストを `tags`メソッドに渡し、次に取得するキーで` get`メソッドを呼び出します。
 
     $john = Cache::tags(['people', 'artists'])->get('John');
 
     $anne = Cache::tags(['people', 'authors'])->get('Anne');
 
 <a name="removing-tagged-cache-items"></a>
-### Removing Tagged Cache Items
+### タグ付きキャッシュ項目の削除
 
-You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
+タグまたはタグのリストが割り当てられているすべてのアイテムをフラッシュすることができます。 例えば、この文は、 `people`、` authors`、またはその両方でタグ付けされたすべてのキャッシュを削除します。 したがって、AnneとJohnの両方がキャッシュから削除されます。
 
     Cache::tags(['people', 'authors'])->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`:
+対照的に、この文は `authors`でタグ付けされたキャッシュのみを削除するので、` Anne`は削除されますが、 `John`では削除されません。
 
     Cache::tags('authors')->flush();
 
 <a name="adding-custom-cache-drivers"></a>
-## Adding Custom Cache Drivers
+## カスタムキャッシュドライバの追加
 
 <a name="writing-the-driver"></a>
-### Writing The Driver
+### ドライバの作成
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation would look something like this:
+カスタムキャッシュドライバを作成するには、最初に `Illuminate¥Contracts¥Cache¥Store` [contract]（/ docs / {{version}} /コントラクト）を実装する必要があります。 ですから、MongoDBのキャッシュ実装は次のようになります：
 
     <?php
 
@@ -277,18 +277,18 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
         public function getPrefix() {}
     }
 
-We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the framework source code. Once our implementation is complete, we can finish our custom driver registration.
+これらのメソッドのそれぞれをMongoDB接続を使って実装するだけです。 これらの各メソッドを実装する方法の例については、フレームワークのソースコードで `Illuminate \ Cache \ MemcachedStore`を見てください。 実装が完了したら、カスタムドライバ登録を完了できます。
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
     });
 
-> {tip} If you're wondering where to put your custom cache driver code, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+> {tip}カスタムキャッシュドライバのコードをどこに置くのか不思議なら、 `app`ディレクトリ内に` Extensions`名前空間を作ることができます。 ただし、Laravelには厳格なアプリケーション構造がなく、好みに応じてアプリケーションを自由に整理することができます。
 
 <a name="registering-the-driver"></a>
-### Registering The Driver
+### ドライバの登録
 
-To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array:
+カスタムキャッシュドライバをLaravelに登録するには、 `Cache`ファサードで` extend`メソッドを使います。 `Cache :: extend`の呼び出しは、新しいLaravelアプリケーションに付属しているデフォルトの` App \ Providers \ AppServiceProvider`の `boot`メソッドで行うことができます。あるいは、独自のサービスプロバイダを作成して拡張機能を格納することもできます プロバイダを `config / app.php`プロバイダ配列に登録することを忘れないでください：
 
     <?php
 
@@ -323,14 +323,14 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
         }
     }
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+`extend`メソッドに渡される最初の引数は、ドライバの名前です。 これは `config / cache.php`設定ファイルの` driver`オプションに対応します。 2番目の引数はClosureで、Illuminate \ Cache \ Repositoryインスタンスを返す必要があります。 Closureは `$ app`インスタンスを渡します。これは[サービスコンテナ]（/ docs / {{version}} / container）のインスタンスです。
 
-Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension.
+拡張機能が登録されたら、 `config / cache.php`設定ファイルの` driver`オプションをあなたの拡張機能の名前に更新してください。
 
 <a name="events"></a>
-## Events
+## イベント
 
-To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your `EventServiceProvider`:
+すべてのキャッシュ操作でコードを実行するには、キャッシュによって起動された[events]（/ docs / {{version}} / events）を待ち受けることができます。 通常、これらのイベントリスナを `EventServiceProvider`内に配置する必要があります：
 
     /**
      * The event listener mappings for the application.
